@@ -39,7 +39,7 @@ main {
     padding: 24px 0px 80px 0px
 }
 
-section p{
+section p {
     background-color: #DCDCDC;
     border-radius: 2px;
     padding: 14px 8px;
@@ -47,15 +47,16 @@ section p{
     width: 100%;
     overflow-wrap: break-word;
 }
-section time{
+
+section time {
     color: #A3A3A3;
 }
 
-section strong{
+section strong {
     font-weight: 700;
 }
 
-aside p{
+aside p {
     display: block;
     overflow-x: hidden;
 }
@@ -114,7 +115,7 @@ ion-icon[name="paper-plane-outline"] {
 }
 
 
-aside{
+aside {
     position: fixed;
     top: 0%;
     right: 0%;
@@ -123,4 +124,41 @@ aside{
     height: 100vh;
     background-color: #FFFFFF;
     transition: all 0.75s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 5px;
+}
+
+
+h2 {
+    width: 50vw;
+    min-width: 200px;
+    max-width: 350px;
+    font-size: 16px;
+    line-height: 19px;
+    font-weight: 700;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    padding: 45px 0;
+}
+
+aside div{
+    display: flex;
+    width: 50vw;
+    min-width: 200px;
+    max-width: 350px;
+    font-size: 16px;
+    align-items: center;
+}
+
+h3{
+    display: inline-block;
+    width: 100%;
+}
+
+ion-icon[name="checkmark-outline"]{
+    color: green;
+    float: right;
 }

@@ -1,13 +1,15 @@
 inserirSeuNome()
 
 function inserirSeuNome() {
-    let nomeDoUsuario = prompt("Qual o seu nome?")
+    // let nomeDoUsuario = prompt("Qual o seu nome?")
 
+    let nomeDoUsuario = 'umNomeAleatórioAí'
     const objetoNome = {
         name: nomeDoUsuario
     }
 
     let promessa = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', objetoNome)
+    
     promessa.then(solicitarDadosServidor)
 }
 

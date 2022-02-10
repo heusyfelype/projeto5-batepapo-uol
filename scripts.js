@@ -1,4 +1,15 @@
-solicitarDadosServidor()
+inserirSeuNome()
+
+function inserirSeuNome() {
+    let nomeDoUsuario = prompt("Qual o seu nome?")
+
+    const objetoNome = {
+        name: nomeDoUsuario
+    }
+
+    let promessa = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', objetoNome)
+    promessa.then(solicitarDadosServidor)
+}
 
 function solicitarDadosServidor() {
     const promessa = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
@@ -10,13 +21,12 @@ function processarResposta(resposta) {
 
     let respostaObjetivo = resposta.data
     LugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
-    console.log(respostaObjetivo, LugarParacolocarDadosDoServidorNoChat)
 
     for (let i = 0; i < respostaObjetivo.length; i++) {
 
         if (respostaObjetivo[i].type === 'status') {
             LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
-                 <p class="fundo-cinza"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> ${respostaObjetivo[i].text}</p>
+                <p class="fundo-cinza"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> ${respostaObjetivo[i].text}</p>
     
             `
         }
@@ -24,7 +34,13 @@ function processarResposta(resposta) {
             LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
             <p class="fundo-branco"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
 
-       `
+            `
+        }
+        else if (respostaObjetivo[i].type === 'private_message') {
+            LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            <p class="fundo-rosa"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
+
+            `
         }
     };
 }

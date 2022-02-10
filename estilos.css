@@ -28,7 +28,7 @@ header img {
 
 header ion-icon[name="people"] {
     font-size: 45px;
-    margin: 0 21px;
+    margin: 0 36px;
     cursor: pointer;
 }
 
@@ -59,7 +59,6 @@ aside p{
     display: block;
     overflow-x: hidden;
 }
-
 
 
 
@@ -100,10 +99,11 @@ textarea {
 ion-icon[name="paper-plane-outline"] {
     font-size: 24px;
     padding: 10px;
+    margin-right: 10px;
 }
 
 .background-preto-transparente {
-    position: absolute;
+    position: fixed;
     top: 0%;
     left: 0%;
     z-index: 0;
@@ -115,7 +115,7 @@ ion-icon[name="paper-plane-outline"] {
 
 
 aside{
-    position: absolute;
+    position: fixed;
     top: 0%;
     right: 0%;
     z-index: 3;

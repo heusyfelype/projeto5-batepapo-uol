@@ -1,10 +1,45 @@
-function chamarBarraLateral(){
-    document.querySelector(".barra-lateral").classList.add("barra-lateral-efeito")
-    document.querySelector(".background-preto-transparente").classList.add("background-preto-transparente-efeito")
-    document.querySelector(".background-preto-transparente").setAttribute("onclick","retornarParaOChat()")
+solicitarDadosServidor()
+
+function solicitarDadosServidor() {
+    const promessa = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
+    promessa.then(processarResposta)
 }
 
-function retornarParaOChat(){
+let LugarParacolocarDadosDoServidorNoChat = null;
+function processarResposta(resposta) {
+
+    let respostaObjetivo = resposta.data
+    LugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
+    console.log(respostaObjetivo, LugarParacolocarDadosDoServidorNoChat)
+
+    for (let i = 0; i < respostaObjetivo.length; i++) {
+
+        if (respostaObjetivo[i].type === 'status') {
+            LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
+                 <p class="fundo-cinza"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> ${respostaObjetivo[i].text}</p>
+    
+            `
+        }
+        else if (respostaObjetivo[i].type === 'message') {
+            LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            <p class="fundo-branco"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
+
+       `
+        }
+    };
+}
+
+
+function chamarBarraLateral() {
+
+    document.querySelector(".barra-lateral").classList.add("barra-lateral-efeito")
+    document.querySelector(".background-preto-transparente").classList.add("background-preto-transparente-efeito")
+    document.querySelector(".background-preto-transparente").setAttribute("onclick", "retornarParaOChat()")
+}
+
+function retornarParaOChat() {
+
     document.querySelector(".barra-lateral").classList.remove("barra-lateral-efeito")
+
     document.querySelector(".background-preto-transparente").classList.remove("background-preto-transparente-efeito")
 }

@@ -34,9 +34,34 @@ header ion-icon[name="people"] {
 
 main {
     background-color: #f3f3f3;
-    height: calc(100vh - 160px);
+    /* height: calc(100vh - 80px); */
     margin-top: 80px;
+    padding: 24px 0px 80px 0px
 }
+
+section p{
+    background-color: #DCDCDC;
+    border-radius: 2px;
+    padding: 14px 8px;
+    margin: 2px 0px;
+    width: 100%;
+    overflow-wrap: break-word;
+}
+section time{
+    color: #A3A3A3;
+}
+
+section strong{
+    font-weight: 700;
+}
+
+aside p{
+    display: block;
+    overflow-x: hidden;
+}
+
+
+
 
 footer {
     padding: 15px 17px;

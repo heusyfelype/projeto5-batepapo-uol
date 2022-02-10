@@ -1,15 +1,27 @@
-.escondido{
+.escondido {
     display: none;
-} 
+}
 
-.barra-lateral-efeito{
+.barra-lateral-efeito {
     width: 70%;
     max-width: 500px;
     transition: all 0.75s ease-in-out;
 }
 
-.background-preto-transparente-efeito{
+.background-preto-transparente-efeito {
     background: rgba(0, 0, 0, .6);
     z-index: 2;
     transition: background 0.5s;
+}
+
+.fundo-cinza {
+    background-color: #DCDCDC;
+}
+
+.fundo-branco {
+    background-color: #FFFFFF;
+}
+
+.fundo-rosa {
+    background-color: #DCDCDC;
 }

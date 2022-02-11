@@ -156,9 +156,28 @@ aside div{
 h3{
     display: inline-block;
     width: 100%;
+    font-size: 16px;
+}
+
+aside ion-icon[name="people"] {
+    width: 25px;
+    height: 25px;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: ;
 }
 
 ion-icon[name="checkmark-outline"]{
     color: green;
     float: right;
+    margin-right: 15px;
+}
+
+
+.usuarios-online{
+    display: flex;
+    flex-direction: column;
+    max-height: 60vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }

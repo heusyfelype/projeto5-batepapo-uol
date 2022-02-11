@@ -53,17 +53,52 @@
 
     <aside class="barra-lateral">
         <h2> Escolha um contato para enviar mensagem </h2>
-        <div>
-            <ion-icon name="people">
-            </ion-icon>
+        <div class="contato-enviar-mensagem">
+            <ion-icon name="people"></ion-icon>
             <h3>
                 Todos
                 <ion-icon name="checkmark-outline">
                 </ion-icon>
             </h3>
         </div>
+        <div class="usuarios-online">
+            <div class="contato-enviar-mensagem">
+                <ion-icon name="people"></ion-icon>
+                <h3>
+                    Fulano
+                    <ion-icon name="checkmark-outline">
+                    </ion-icon>
+                </h3>
+            </div>
+
+            <div class="contato-enviar-mensagem">
+                <ion-icon name="people"></ion-icon>
+                <h3>
+                    Ciclano
+                    <ion-icon name="checkmark-outline">
+                    </ion-icon>
+                </h3>
+            </div>
+
+        </div>
 
         <h2> Escolha a visibilidade </h2>
+        <div class="visibilidade" onclick="selecionarVisibilidade(this, 1)">
+            <ion-icon name="lock-open"></ion-icon>
+            <h3>
+                Público
+                <ion-icon name="checkmark-outline" class="">
+                </ion-icon>
+            </h3>
+        </div>
+        <div class="visibilidade"  onclick="selecionarVisibilidade(this, 2)">
+            <ion-icon name="lock-closed"></ion-icon>
+            <h3>
+                Privado
+                <ion-icon name="checkmark-outline" class="escondido">
+                </ion-icon>
+            </h3>
+        </div>
     </aside>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

@@ -10,11 +10,21 @@ solicitarUsuariosOnline()
 
 // setInterval(usuariosOnline, 10000)
 
+function geraStringAleatoria(tamanho) {
+    var stringAleatoria = '';
+    var caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    for (var i = 0; i < tamanho; i++) {
+        stringAleatoria += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return stringAleatoria;
+}
+
+
 function inserirSeuNome() {
     //nomeDoUsuario = prompt("Qual o seu nome?")
     // nomeDoUsuario = "um Nome Aleatorio Aí"
     objetoNome = {
-        name: nomeDoUsuario
+        name: geraStringAleatoria(6)
     }
     let promessaLogin = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', objetoNome)
     promessaLogin.then(solicitarDadosServidor)
@@ -26,39 +36,38 @@ function inserirSeuNome() {
 function solicitarDadosServidor() {
     const promessaMensagens = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
     promessaMensagens.then(processarResposta)
-    setInterval(informarEstouOnline, 5000, objetoNome)
+    // setInterval(informarEstouOnline, 5000, objetoNome)
 }
 
 
 
-let LugarParacolocarDadosDoServidorNoChat = null;
+let lugarParacolocarDadosDoServidorNoChat = null;
 function processarResposta(resposta) {
 
     let respostaObjetivo = resposta.data
-    LugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
+    lugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
 
     for (let i = 0; i < respostaObjetivo.length; i++) {
 
         if (respostaObjetivo[i].type === 'status') {
-            LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
                 <p class="fundo-cinza"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> ${respostaObjetivo[i].text}</p>
-    
-            `
+                `
+                lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
         else if (respostaObjetivo[i].type === 'message') {
-            LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
             <p class="fundo-branco"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
-
             `
-        }
-        else if (respostaObjetivo[i].type === 'private_message') {
-            LugarParacolocarDadosDoServidorNoChat.innerHTML = LugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })       
+         }
+        else if (respostaObjetivo[i].type === 'private_message' && respostaObjetivo[i].to === nomeDoUsuario) {
+            lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
             <p class="fundo-rosa"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
-
             `
+            lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })        
         }
-        // document.querySelector("section").lastChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
+    }
 }
 
 

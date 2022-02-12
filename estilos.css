@@ -97,10 +97,11 @@ textarea {
 }
 
 
-ion-icon[name="paper-plane-outline"] {
+.botao-enviar-mensagem{
     font-size: 24px;
     padding: 10px;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .background-preto-transparente {

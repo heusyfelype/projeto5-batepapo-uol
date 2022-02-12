@@ -1,15 +1,24 @@
+let nomeDoUsuario = "um Nome Aleatorio Aí"
+let objetoNome = {
+    name: ""
+}
+
+
 inserirSeuNome()
 solicitarUsuariosOnline()
+
+
 // setInterval(usuariosOnline, 10000)
 
 function inserirSeuNome() {
-    // let nomeDoUsuario = prompt("Qual o seu nome?")
-    let nomeDoUsuario = 'umNomeAleatórioAí'
-    const objetoNome = {
+    //nomeDoUsuario = prompt("Qual o seu nome?")
+    // nomeDoUsuario = "um Nome Aleatorio Aí"
+    objetoNome = {
         name: nomeDoUsuario
     }
     let promessaLogin = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', objetoNome)
     promessaLogin.then(solicitarDadosServidor)
+    
 }
 
 
@@ -17,6 +26,7 @@ function inserirSeuNome() {
 function solicitarDadosServidor() {
     const promessaMensagens = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
     promessaMensagens.then(processarResposta)
+    setInterval(informarEstouOnline, 5000, objetoNome)
 }
 
 
@@ -47,21 +57,22 @@ function processarResposta(resposta) {
 
             `
         }
+        // document.querySelector("section").lastChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
     };
 }
 
 
-function solicitarUsuariosOnline(){
+function solicitarUsuariosOnline() {
     const promessaUsuariosOnline = axios.get('https://mock-api.driven.com.br/api/v4/uol/participants')
     promessaUsuariosOnline.then(usuariosOnline)
 }
 
 let LugarParacolocarQuemEstaOnline = document.querySelector(".usuarios-online ")
-function usuariosOnline(resposta){
+function usuariosOnline(resposta) {
     let respostaObjetivo = resposta.data
-    console.log(resposta, resposta.data)
+    // console.log(resposta, resposta.data)
 
-    for (let i = 0; i < respostaObjetivo.length; i++){
+    for (let i = 0; i < respostaObjetivo.length; i++) {
         LugarParacolocarQuemEstaOnline.innerHTML = LugarParacolocarQuemEstaOnline.innerHTML + `
         
         <div class="contato-enviar-mensagem">
@@ -77,6 +88,22 @@ function usuariosOnline(resposta){
 
 }
 
+
+function enviarMensagem(teste) {
+    let textoMensagem = document.querySelector("footer textarea").value;
+    enviarMensagemParaOServidor(textoMensagem)
+}
+
+function enviarMensagemParaOServidor(aMensagem) {
+    const aMensagemObjeto = {
+        from: nomeDoUsuario,
+        to: "Todos",
+        text: aMensagem,
+        type: "message"
+    }
+    let promessa = axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', aMensagemObjeto)
+    promessa.then(processarResposta)
+}
 
 
 
@@ -94,16 +121,22 @@ function retornarParaOChat() {
 
 
 let publicoOuPrivadoChack = document.querySelectorAll(".visibilidade h3 ion-icon")
-function selecionarVisibilidade(elemento, indice){
-    if (indice === 1){
+function selecionarVisibilidade(elemento, indice) {
+    if (indice === 1) {
         publicoOuPrivadoChack[1].classList.add("escondido")
-        console.log(publicoOuPrivadoChack[1])
+        // console.log(publicoOuPrivadoChack[1])
         elemento.querySelector("h3 ion-icon").classList.remove("escondido")
-    } else /*indice == 2*/{
+    } else /*indice == 2*/ {
         publicoOuPrivadoChack[0].classList.add("escondido")
-        console.log(publicoOuPrivadoChack[0])
+        // console.log(publicoOuPrivadoChack[0])
         elemento.querySelector("h3 ion-icon").classList.remove("escondido")
     }
 }
 
 // elemento.querySelector("h3 ion-icon").classList.contains("escondido")
+
+function informarEstouOnline(usuarioEstaOnline){
+    axios.post('https://mock-api.driven.com.br/api/v4/uol/status', usuarioEstaOnline)
+    console.log('estou online')
+}
+

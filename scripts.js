@@ -3,7 +3,6 @@ let objetoNome = {
     name: ""
 }
 
-
 inserirSeuNome()
 solicitarUsuariosOnline()
 
@@ -19,55 +18,113 @@ function geraStringAleatoria(tamanho) {
     return stringAleatoria;
 }
 
-
+// ************ O CODIGO COMECA EFETIVAMENTE AQUI ************
 function inserirSeuNome() {
     //nomeDoUsuario = prompt("Qual o seu nome?")
     // nomeDoUsuario = "um Nome Aleatorio Aí"
     objetoNome = {
         name: geraStringAleatoria(6)
     }
+
+    nomeDoUsuario = objetoNome.name
     let promessaLogin = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', objetoNome)
     promessaLogin.then(solicitarDadosServidor)
-    
+
 }
-
-
 
 function solicitarDadosServidor() {
     const promessaMensagens = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
-    promessaMensagens.then(processarResposta)
-    // setInterval(informarEstouOnline, 5000, objetoNome)
+    promessaMensagens.then(processarMensagensIniciais)
+    setInterval(informarEstouOnline, 5000, objetoNome)
 }
 
 
-
 let lugarParacolocarDadosDoServidorNoChat = null;
-function processarResposta(resposta) {
+let horaUltimaMensagem = "";
+let arrayComInformacoesMensagem = null;
 
-    let respostaObjetivo = resposta.data
+function processarMensagensIniciais(resposta) {
+    setInterval(solicitarMensagensPeriodicamente, 3000)
+
+    arrayComInformacoesMensagem = resposta.data;
+    horaUltimaMensagem = arrayComInformacoesMensagem[arrayComInformacoesMensagem.length - 1].time;
+
+
     lugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
 
-    for (let i = 0; i < respostaObjetivo.length; i++) {
+    for (let i = 0; i < arrayComInformacoesMensagem.length; i++) {
 
-        if (respostaObjetivo[i].type === 'status') {
+        if (arrayComInformacoesMensagem[i].type === 'status') {
             lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-                <p class="fundo-cinza"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> ${respostaObjetivo[i].text}</p>
+                <p class="fundo-cinza"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> ${arrayComInformacoesMensagem[i].text}</p>
                 `
-                lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
-        else if (respostaObjetivo[i].type === 'message') {
+        else if (arrayComInformacoesMensagem[i].type === 'message') {
             lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-            <p class="fundo-branco"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
+            <p class="fundo-branco"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> para <strong>  ${arrayComInformacoesMensagem[i].to} </strong> ${arrayComInformacoesMensagem[i].text}</p>
             `
-            lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })       
-         }
-        else if (respostaObjetivo[i].type === 'private_message' && respostaObjetivo[i].to === nomeDoUsuario) {
+        }
+        else if (arrayComInformacoesMensagem[i].type === 'private_message' && arrayComInformacoesMensagem[i].to === nomeDoUsuario) {
             lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-            <p class="fundo-rosa"><time> (${respostaObjetivo[i].time}) </time> <strong> ${respostaObjetivo[i].from} </strong> para <strong>  ${respostaObjetivo[i].to} </strong> ${respostaObjetivo[i].text}</p>
+            <p class="fundo-rosa"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> para <strong>  ${arrayComInformacoesMensagem[i].to} </strong> ${arrayComInformacoesMensagem[i].text}</p>
             `
-            lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })        
         }
     }
+    lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+function solicitarMensagensPeriodicamente() {
+    const promessaMensagens = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages');
+    promessaMensagens.then(atualizarMensagens);
+}
+
+function atualizarMensagens(resposta) {
+    let respostaObjetivo = resposta.data;
+    let podeImprimir = false;
+    let indiceDaUlttimaMensagemAntesDeAtualizar = respostaObjetivo.length - 1;
+
+    for (let i = 0; i < respostaObjetivo.length; i++) {
+        if (respostaObjetivo[i].time == horaUltimaMensagem) {
+            //será a ultima mensagem
+            podeImprimir = true;
+            indiceDaUlttimaMensagemAntesDeAtualizar = i;
+            // se a variável é true, e então i>= o indice daquela mensagem
+            // se for a mesma mensagem, pula,
+            // se for outras mensagens, imprime
+        }
+        if (podeImprimir == true && i > indiceDaUlttimaMensagemAntesDeAtualizar) {
+            imprimirNovasMensagens(respostaObjetivo[i])
+        }
+        if (i == respostaObjetivo.length -1 ){
+            horaUltimaMensagem = respostaObjetivo[i].time;
+        }
+
+    }
+
+    // respostaObjetivo.filter(compararHora)
+}
+
+function imprimirNovasMensagens(objetoMensagem) {
+    lugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
+    arrayComInformacoesMensagem = objetoMensagem.data;
+    
+
+    if (objetoMensagem.type === 'status') {
+        lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
+                <p class="fundo-cinza"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> ${objetoMensagem.text}</p>
+                `
+    }
+    else if (objetoMensagem.type === 'message') {
+        lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            <p class="fundo-branco"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> para <strong>  ${objetoMensagem.to} </strong> ${objetoMensagem.text}</p>
+            `
+    }
+    else if (objetoMensagem.type === 'private_message' && (objetoMensagem.to === nomeDoUsuario || objetoMensagem.from === nomeDoUsuario) ) {
+        lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
+            <p class="fundo-rosa"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> para <strong>  ${objetoMensagem.to} </strong> ${objetoMensagem.text}</p>
+            `
+    }
+    lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 
@@ -100,18 +157,21 @@ function usuariosOnline(resposta) {
 
 function enviarMensagem(teste) {
     let textoMensagem = document.querySelector("footer textarea").value;
+    document.querySelector("footer textarea").value = ""
     enviarMensagemParaOServidor(textoMensagem)
 }
 
 function enviarMensagemParaOServidor(aMensagem) {
-    const aMensagemObjeto = {
+    let aMensagemObjeto = {
         from: nomeDoUsuario,
         to: "Todos",
         text: aMensagem,
         type: "message"
     }
+
+    console.log(aMensagemObjeto)
     let promessa = axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', aMensagemObjeto)
-    promessa.then(processarResposta)
+    promessa.then(solicitarMensagensPeriodicamente)
 }
 
 
@@ -144,7 +204,7 @@ function selecionarVisibilidade(elemento, indice) {
 
 // elemento.querySelector("h3 ion-icon").classList.contains("escondido")
 
-function informarEstouOnline(usuarioEstaOnline){
+function informarEstouOnline(usuarioEstaOnline) {
     axios.post('https://mock-api.driven.com.br/api/v4/uol/status', usuarioEstaOnline)
     console.log('estou online')
 }

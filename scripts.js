@@ -23,9 +23,9 @@ function inserirSeuNome() {
     //nomeDoUsuario = prompt("Qual o seu nome?")
     // nomeDoUsuario = "um Nome Aleatorio Aí"
     objetoNome = {
-        name: geraStringAleatoria(6)
+        name: geraStringAleatoria(4)
     }
-
+    console.log(objetoNome)
     nomeDoUsuario = objetoNome.name
     let promessaLogin = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', objetoNome)
     promessaLogin.then(solicitarDadosServidor)
@@ -85,29 +85,23 @@ function atualizarMensagens(resposta) {
 
     for (let i = 0; i < respostaObjetivo.length; i++) {
         if (respostaObjetivo[i].time == horaUltimaMensagem) {
-            //será a ultima mensagem
             podeImprimir = true;
             indiceDaUlttimaMensagemAntesDeAtualizar = i;
-            // se a variável é true, e então i>= o indice daquela mensagem
-            // se for a mesma mensagem, pula,
-            // se for outras mensagens, imprime
         }
         if (podeImprimir == true && i > indiceDaUlttimaMensagemAntesDeAtualizar) {
             imprimirNovasMensagens(respostaObjetivo[i])
         }
-        if (i == respostaObjetivo.length -1 ){
+        if (i == respostaObjetivo.length - 1) {
             horaUltimaMensagem = respostaObjetivo[i].time;
         }
 
     }
-
-    // respostaObjetivo.filter(compararHora)
 }
 
 function imprimirNovasMensagens(objetoMensagem) {
     lugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
     arrayComInformacoesMensagem = objetoMensagem.data;
-    
+
 
     if (objetoMensagem.type === 'status') {
         lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
@@ -119,7 +113,7 @@ function imprimirNovasMensagens(objetoMensagem) {
             <p class="fundo-branco"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> para <strong>  ${objetoMensagem.to} </strong> ${objetoMensagem.text}</p>
             `
     }
-    else if (objetoMensagem.type === 'private_message' && (objetoMensagem.to === nomeDoUsuario || objetoMensagem.from === nomeDoUsuario) ) {
+    else if (objetoMensagem.type == 'private_message' && objetoMensagem.to == nomeDoUsuario || objetoMensagem.from == nomeDoUsuario) {
         lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
             <p class="fundo-rosa"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> para <strong>  ${objetoMensagem.to} </strong> ${objetoMensagem.text}</p>
             `
@@ -133,27 +127,47 @@ function solicitarUsuariosOnline() {
     promessaUsuariosOnline.then(usuariosOnline)
 }
 
-let LugarParacolocarQuemEstaOnline = document.querySelector(".usuarios-online ")
+let LugarParacolocarQuemEstaOnline = document.querySelector(".usuarios-online")
 function usuariosOnline(resposta) {
     let respostaObjetivo = resposta.data
     // console.log(resposta, resposta.data)
-
+    LugarParacolocarQuemEstaOnline.innerHTML = `
+        <div class="contato-enviar-mensagem">
+            <ion-icon name="people"></ion-icon>
+            <h3 onclick="selecionarUsuarioParaEnviarMensagem(this)">
+                <p>Todos</p>
+                <ion-icon name="checkmark-outline" class="botao-check"></ion-icon>
+            </h3>
+        </div>
+    `
     for (let i = 0; i < respostaObjetivo.length; i++) {
         LugarParacolocarQuemEstaOnline.innerHTML = LugarParacolocarQuemEstaOnline.innerHTML + `
         
         <div class="contato-enviar-mensagem">
-            <ion-icon name="people"></ion-icon>
-                <h3>
-                    ${respostaObjetivo[i].name}
-                    <ion-icon name="checkmark-outline" class="escondido"></ion-icon>
+            <ion-icon name="person-circle"></ion-icon>
+                <h3 onclick="selecionarUsuarioParaEnviarMensagem(this)">
+                    <p> ${respostaObjetivo[i].name} </p>
+                    <ion-icon name="checkmark-outline" class="botao-check escondido"></ion-icon>
                 </h3>
         </div>
-
         `
     }
 
 }
 
+let nomeDeQuemVaiReceberAMensagem = "Todos"
+function selecionarUsuarioParaEnviarMensagem(oUsuarioQueVaiReceberAMensagem) {
+    nomeDeQuemVaiReceberAMensagem = oUsuarioQueVaiReceberAMensagem.querySelector("p").innerHTML;
+    console.log(typeof(nomeDeQuemVaiReceberAMensagem), nomeDeQuemVaiReceberAMensagem)
+    let todosETodosQueEstaoOnline = document.querySelectorAll(".botao-check")
+    for (let i = 0; i < todosETodosQueEstaoOnline.length; i++) {
+        if (!todosETodosQueEstaoOnline[i].classList.contains("escondido")) {
+            todosETodosQueEstaoOnline[i].classList.add("escondido")
+        }
+    }
+    oUsuarioQueVaiReceberAMensagem.querySelector(".botao-check").classList.remove("escondido")
+    document.querySelector(".pessoa-que-a-mensagem-eh-direcionada").innerHTML = nomeDeQuemVaiReceberAMensagem;
+}
 
 function enviarMensagem(teste) {
     let textoMensagem = document.querySelector("footer textarea").value;
@@ -164,17 +178,15 @@ function enviarMensagem(teste) {
 function enviarMensagemParaOServidor(aMensagem) {
     let aMensagemObjeto = {
         from: nomeDoUsuario,
-        to: "Todos",
+        to: nomeDeQuemVaiReceberAMensagem,
         text: aMensagem,
-        type: "message"
+        type: tipoDePrivacidadeDaMensagem
     }
 
     console.log(aMensagemObjeto)
     let promessa = axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', aMensagemObjeto)
     promessa.then(solicitarMensagensPeriodicamente)
 }
-
-
 
 
 function chamarBarraLateral() {
@@ -188,17 +200,19 @@ function retornarParaOChat() {
     document.querySelector(".background-preto-transparente").classList.remove("background-preto-transparente-efeito")
 }
 
-
+let tipoDePrivacidadeDaMensagem = "message"
 let publicoOuPrivadoChack = document.querySelectorAll(".visibilidade h3 ion-icon")
 function selecionarVisibilidade(elemento, indice) {
     if (indice === 1) {
         publicoOuPrivadoChack[1].classList.add("escondido")
-        // console.log(publicoOuPrivadoChack[1])
+        tipoDePrivacidadeDaMensagem = "message"
         elemento.querySelector("h3 ion-icon").classList.remove("escondido")
+        document.querySelector(".visibilidade").innerHTML = 'Público'
     } else /*indice == 2*/ {
         publicoOuPrivadoChack[0].classList.add("escondido")
-        // console.log(publicoOuPrivadoChack[0])
+        tipoDePrivacidadeDaMensagem = "private_message"
         elemento.querySelector("h3 ion-icon").classList.remove("escondido")
+        document.querySelector(".visibilidade").innerHTML = 'Reservadamente'
     }
 }
 

@@ -30,9 +30,6 @@
 
     <main>
         <section class="mensagens-dos-usuarios">
-            <p><time>hora</time> <strong> fulano </strong> entra na sala
-                sdkjfhgdkhfgksdhfkgjhdsfkjlghkldsjfghlksdfhglksdhfkljgdhsfklghdskljhglkdfhg </p>
-            <p><time>hora</time> <strong> fulano </strong> entra na sala</p>
         </section>
 
     </main>
@@ -41,7 +38,7 @@
         <div class=" texto-e-informacoes-de-envio">
             <textarea name="escrever mensagem no chat" id="" cols="42" rows="1"
                 placeholder="Escreva aqui..."></textarea>
-            <p> enviando para FULANO (VISIBILIDADE) </p>
+            <p> enviando para <span class="pessoa-que-a-mensagem-eh-direcionada"> Todos </span>  (<span class="visibilidade"> Público </span>) </p>
         </div>
         <div class="botao-enviar-mensagem" onclick="enviarMensagem(this)">
             <ion-icon name="paper-plane-outline"></ion-icon>
@@ -53,32 +50,7 @@
 
         <aside class="barra-lateral">
             <h2> Escolha um contato para enviar mensagem </h2>
-            <div class="contato-enviar-mensagem">
-                <ion-icon name="people"></ion-icon>
-                <h3>
-                    Todos
-                    <ion-icon name="checkmark-outline">
-                    </ion-icon>
-                </h3>
-            </div>
             <div class="usuarios-online">
-                <div class="contato-enviar-mensagem">
-                    <ion-icon name="people"></ion-icon>
-                    <h3>
-                        Fulano
-                        <ion-icon name="checkmark-outline">
-                        </ion-icon>
-                    </h3>
-                </div>
-
-                <div class="contato-enviar-mensagem">
-                    <ion-icon name="people"></ion-icon>
-                    <h3>
-                        Ciclano
-                        <ion-icon name="checkmark-outline">
-                        </ion-icon>
-                    </h3>
-                </div>
             </div>
 
             <h2> Escolha a visibilidade </h2>

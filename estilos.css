@@ -63,7 +63,7 @@ aside p {
 
 
 
-footer {
+.escrever-mensagens {
     padding: 15px 17px;
     position: fixed;
     z-index: 1;
@@ -97,7 +97,7 @@ textarea {
 }
 
 
-.botao-enviar-mensagem{
+.botao-enviar-mensagem {
     font-size: 24px;
     padding: 10px;
     margin-right: 10px;
@@ -145,41 +145,141 @@ h2 {
     padding: 45px 0;
 }
 
-aside div{
+.visibilidade{
     display: flex;
-    width: 50vw;
-    min-width: 200px;
-    max-width: 350px;
-    font-size: 16px;
     align-items: center;
-    
 }
 
-h3{
+h3 {
     display: inline-block;
-    width: 100%;
+    width: 80%;
     font-size: 16px;
+    cursor: pointer;
+}
+
+ion-icon[name="lock-open"]{
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    min-height: 25px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+ion-icon[name="lock-closed"]{
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    min-height: 25px;
+    margin: 0 10px;
     cursor: pointer;
 }
 
 aside ion-icon[name="people"] {
     width: 25px;
     height: 25px;
+    min-width: 25px;
+    min-height: 25px;
     margin: 0 10px;
     cursor: pointer;
 }
 
-ion-icon[name="checkmark-outline"]{
-    color: green;
-    float: right;
-    margin-right: 15px;
+.usuarios-online {
+    width: 60%;
+    display: block;
+    max-height: 50vh;
+    overflow-y: scroll;
+    position: relative;
 }
 
 
-.usuarios-online{
+ion-icon[name="checkmark-outline"] {
+    color: green;
+    float: right;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    margin-right: 15px;
+    margin-left: 5px;
+}
+
+
+.usuarios-online .contato-enviar-mensagem{
+    display: flex;
+    height: 30px;
+}
+
+.usuarios-online .contato-enviar-mensagem .nome-usuario{
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+    width: 80%;
+}
+
+.usuarios-online .contato-enviar-mensagem .nome-usuario p{
+    padding-right: 15px;
+    text-overflow: ellipsis;
+    line-height: normal;
+}
+
+
+ion-icon[name="person-circle"]{
+    width: 25px;
+    min-width: 25px;
+    height: 25px;
+    min-width: 25px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.visibilidade{
+    width: 60%;
+}
+
+
+
+
+.tela-login {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 1);
     display: flex;
     flex-direction: column;
-    max-height: 60vh;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    justify-content: center;
+    align-items: center;
+    transition: all 35;
+}
+
+.tela-login img {
+    width: 130px;
+    margin-bottom: 100px;
+}
+
+.tela-login input {
+    width: 260px;
+    margin-bottom: 15px;
+    height: 54px;
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.tela-login input::placeholder {
+    color: #AEAEAE;
+    text-align: center;
+}
+
+.tela-login button{
+    width: 110px;
+    height: 45px;
+    background-color: #E7E7E7;
+    color: #696969;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
 }

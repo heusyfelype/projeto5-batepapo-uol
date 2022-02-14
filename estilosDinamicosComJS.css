@@ -2,6 +2,10 @@
     display: none;
 }
 
+.esconder-tela-login{
+    display: none;
+}
+
 .barra-lateral-efeito {
     width: 70%;
     max-width: 500px;

@@ -20,6 +20,12 @@
 </head>
 
 <body>
+    <div class="tela-login">
+        <img src="imagens/logo-uol.png" alt="">
+        <input type="text" name="nome" id="" placeholder="Digite seu nome">
+        <button onclick="enviarNomeUsuario()">Entrar</button>
+    </div>
+
     <header>
         <img src="imagens/logo-uol.png" alt="logo da uol">
         <div onclick="chamarBarraLateral()">
@@ -34,48 +40,49 @@
 
     </main>
 
-    <footer>
+    <div class="escrever-mensagens">
         <div class=" texto-e-informacoes-de-envio">
             <textarea name="escrever mensagem no chat" id="" cols="42" rows="1"
                 placeholder="Escreva aqui..."></textarea>
-            <p> enviando para <span class="pessoa-que-a-mensagem-eh-direcionada"> Todos </span>  (<span class="visibilidade"> Público </span>) </p>
+            <p> enviando para <span class="pessoa-que-a-mensagem-eh-direcionada"> Todos </span> (<span
+                    class="informar-visibilidade"> Público </span>) </p>
         </div>
         <div class="botao-enviar-mensagem" onclick="enviarMensagem(this)">
             <ion-icon name="paper-plane-outline"></ion-icon>
         </div>
-    </footer>
+    </div>
 
     <div class=" background-preto-transparente">
+    </div>
+
+    <aside class="barra-lateral">
+        <h2> Escolha um contato para enviar mensagem </h2>
+        <div class="usuarios-online">
         </div>
 
-        <aside class="barra-lateral">
-            <h2> Escolha um contato para enviar mensagem </h2>
-            <div class="usuarios-online">
-            </div>
+        <h2> Escolha a visibilidade </h2>
+        <div class="visibilidade" onclick="selecionarVisibilidade(this, 1)">
+            <ion-icon name="lock-open"></ion-icon>
+            <h3>
+                Público
+                <ion-icon name="checkmark-outline" class="">
+                </ion-icon>
+            </h3>
+        </div>
+        <div class="visibilidade" onclick="selecionarVisibilidade(this, 2)">
+            <ion-icon name="lock-closed"></ion-icon>
+            <h3>
+                Reservadamente
+                <ion-icon name="checkmark-outline" class="escondido">
+                </ion-icon>
+            </h3>
+        </div>
+    </aside>
 
-            <h2> Escolha a visibilidade </h2>
-            <div class="visibilidade" onclick="selecionarVisibilidade(this, 1)">
-                <ion-icon name="lock-open"></ion-icon>
-                <h3>
-                    Público
-                    <ion-icon name="checkmark-outline" class="">
-                    </ion-icon>
-                </h3>
-            </div>
-            <div class="visibilidade" onclick="selecionarVisibilidade(this, 2)">
-                <ion-icon name="lock-closed"></ion-icon>
-                <h3>
-                    Privado
-                    <ion-icon name="checkmark-outline" class="escondido">
-                    </ion-icon>
-                </h3>
-            </div>
-        </aside>
-
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-        <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="scripts.js"></script>
 </body>
 
 </html>

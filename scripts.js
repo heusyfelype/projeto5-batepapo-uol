@@ -34,24 +34,22 @@ function processarMensagensIniciais(resposta) {
     arrayComInformacoesMensagem = resposta.data;
     horaUltimaMensagem = arrayComInformacoesMensagem[arrayComInformacoesMensagem.length - 1].time;
 
-
     lugarParacolocarDadosDoServidorNoChat = document.querySelector("section");
 
     for (let i = 0; i < arrayComInformacoesMensagem.length; i++) {
-
         if (arrayComInformacoesMensagem[i].type === 'status') {
             lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-                <p class="fundo-cinza"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> ${arrayComInformacoesMensagem[i].text}</p>
+                <p class="fundo-cinza" data-identifier="message"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> ${arrayComInformacoesMensagem[i].text}</p>
                 `
         }
         else if (arrayComInformacoesMensagem[i].type === 'message') {
             lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-            <p class="fundo-branco"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> para <strong>  ${arrayComInformacoesMensagem[i].to}: </strong> ${arrayComInformacoesMensagem[i].text}</p>
+            <p class="fundo-branco" data-identifier="message"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> para <strong>  ${arrayComInformacoesMensagem[i].to}: </strong> ${arrayComInformacoesMensagem[i].text}</p>
             `
         }
         else if (arrayComInformacoesMensagem[i].type === 'private_message' && arrayComInformacoesMensagem[i].to === nomeDoUsuario) {
             lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-            <p class="fundo-rosa"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> reservadamente para <strong>  ${arrayComInformacoesMensagem[i].to} </strong> ${arrayComInformacoesMensagem[i].text}</p>
+            <p class="fundo-rosa" data-identifier="message"><time> (${arrayComInformacoesMensagem[i].time}) </time> <strong> ${arrayComInformacoesMensagem[i].from} </strong> reservadamente para <strong>  ${arrayComInformacoesMensagem[i].to} </strong> ${arrayComInformacoesMensagem[i].text}</p>
             `
         }
     }
@@ -111,18 +109,18 @@ function imprimirNovasMensagens(objetoMensagem) {
 
     if (objetoMensagem.type === 'status') {
         lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-                <p class="fundo-cinza"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> ${objetoMensagem.text}</p>
+                <p class="fundo-cinza" data-identifier="message"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> ${objetoMensagem.text}</p>
                 `
         // atualizarListaDeContatosAutomaticamente(objetoMensagem);
     }
     else if (objetoMensagem.type === 'message') {
         lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-            <p class="fundo-branco"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> para <strong>  ${objetoMensagem.to}: </strong> ${objetoMensagem.text}</p>
+            <p class="fundo-branco" data-identifier="message"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> para <strong>  ${objetoMensagem.to}: </strong> ${objetoMensagem.text}</p>
             `
     }
     else if (objetoMensagem.type == 'private_message' && objetoMensagem.to == nomeDoUsuario || objetoMensagem.from == nomeDoUsuario) {
         lugarParacolocarDadosDoServidorNoChat.innerHTML = lugarParacolocarDadosDoServidorNoChat.innerHTML + `
-            <p class="fundo-rosa"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> reservadamente para <strong>  ${objetoMensagem.to} </strong> ${objetoMensagem.text}</p>
+            <p class="fundo-rosa" data-identifier="message"><time> (${objetoMensagem.time}) </time> <strong> ${objetoMensagem.from} </strong> reservadamente para <strong>  ${objetoMensagem.to} </strong> ${objetoMensagem.text}</p>
             `
     }
     lugarParacolocarDadosDoServidorNoChat.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -140,7 +138,7 @@ function publicarUsuariosOnline(resposta) {
     let respostaObjetivo = resposta.data
     // console.log(resposta, resposta.data)
     LugarParacolocarQuemEstaOnline.innerHTML = `
-        <div class="contato-enviar-mensagem">
+        <div class="contato-enviar-mensagem" data-identifier="participant">
             <ion-icon name="people"></ion-icon>
             <div class="nome-usuario" onclick="selecionarUsuarioParaEnviarMensagem(this)">
                 <p>Todos</p>
@@ -151,7 +149,7 @@ function publicarUsuariosOnline(resposta) {
     for (let i = 0; i < respostaObjetivo.length; i++) {
         LugarParacolocarQuemEstaOnline.innerHTML = LugarParacolocarQuemEstaOnline.innerHTML + `
         
-        <div class="contato-enviar-mensagem">
+        <div class="contato-enviar-mensagem" data-identifier="participant">
             <ion-icon name="person-circle"></ion-icon>
                 <div class="nome-usuario" onclick="selecionarUsuarioParaEnviarMensagem(this)">
                     <p> ${respostaObjetivo[i].name} </p>
